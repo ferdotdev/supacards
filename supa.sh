@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Source common functions
+. ./functions.sh
+
 printf '%s\n' "                                                                                              ";
 printf '%s\n' "  /\$\$\$\$\$\$                                 /\$\$\$\$\$\$                            /\$\$          ";
 printf '%s\n' " /\$\$__  \$\$                               /\$\$__  \$\$                          | \$\$          ";
@@ -16,6 +19,8 @@ printf '%s\n' "                                                                 
 
 printf '%s\n' "An automated supabase self hosted setup script"
 
+sleep 5
+
 if ! docker info > /dev/null 2>&1; then
     printf "Docker no está corriendo o estas en modo rootless.\n"
     exit 1
@@ -25,7 +30,7 @@ dots "Cloning the supabase repo"
 
 git clone --filter=blob:none --no-checkout https://github.com/supabase/supabase
 cd supabase
-git sparse-checkout set --cone docker && git checkout master
+git sparse-checkout set --cone docker > /dev/null 2>&1 && git checkout master > /dev/null 2>&1
 cd ..
 
 dots "Making new supabase project directory"
@@ -34,9 +39,10 @@ mkdir supabase-project
 
 printf '%s\n' "The tree of your project should look like this"
 
-printf '%s\n' ". "
 printf '%s\n' "├── supabase"
 printf '%s\n' "└── supabase-project"
+
+sleep 5
 
 dots "Copying the compose files over to your project"
 
